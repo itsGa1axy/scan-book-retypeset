@@ -1,0 +1,4 @@
+interface:
+  display_name: "扫描书籍同版重建"
+  short_description: "重建清晰文字与公式，保留图片、异形布局、分页和PDF目录层级"
+  default_prompt: "请使用 $scan-book-retypeset 将扫描书重建为可见字体文字，保留图片、分页、特殊布局和 PDF 层级结构与跳转，将公式排成 LaTeX，并提供逐页对照与校验记录。"
