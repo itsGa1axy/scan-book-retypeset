@@ -9,6 +9,10 @@
 
 [English](docs/README.en.md) · [Skill 正文](SKILL.md) · [完整下载](https://github.com/itsGa1axy/scan-book-retypeset/releases) · [验证范围](docs/validation.md)
 
+## v1.1：先校准样式，再允许完成交付
+
+针对真实整书输出中的姓名字号膨胀、标题混色、引用字体错误和误报完成，新增独立区域样式计划与交付门禁。逐页存在文件、全书联系表、旧标签入口或自由文本“例外说明”不能代替验收。详见 [校准与门禁](references/calibration-and-review.md)。
+
 ## 能做什么
 
 - 将扫描正文重建为**真正可见的字体文字**，保留原页映射、文字区域与断行关系。
@@ -22,7 +26,7 @@
 
 ## 安装与调用
 
-从 [Releases](https://github.com/itsGa1axy/scan-book-retypeset/releases) 下载 `scan-book-retypeset-v1.0.0.zip`，解压后将**整个 `scan-book-retypeset` 目录**放入 agent 支持的 skills 目录。压缩包已包含参考文档、脚本和许可证。
+从 [Releases](https://github.com/itsGa1axy/scan-book-retypeset/releases) 下载 `scan-book-retypeset-v1.1.0.zip`，解压后将**整个 `scan-book-retypeset` 目录**放入 agent 支持的 skills 目录。压缩包已包含参考文档、脚本和许可证。
 
 也可以从源码安装到 Codex（macOS / Linux；目标已存在时先检查，脚本不会覆盖）：
 
@@ -55,15 +59,20 @@ python -m pip install -r requirements.txt
 python scripts/pdf_probe.py input.pdf --pages 1-10 --output work/probe.json --render-dir work/previews
 python scripts/pdf_compare.py input.pdf rebuilt.pdf --source-pages 1-10 --output work/comparison.pdf
 python scripts/pdf_audit.py input.pdf rebuilt.pdf --source-pages 1-10 --report work/audit.json
+# 先按原图或认可样张填写 style-plan 和 review-v2，空模板不能通过
+python scripts/pdf_style_check.py rebuilt.pdf --plan source/style-plan.json --report work/style-check.json
+python scripts/pdf_delivery_gate.py input.pdf rebuilt.pdf --source-pages 1-10 --review review.json --report work/delivery-gate.json
 ```
 
-Windows 可用 `.venv\Scripts\Activate.ps1` 激活环境，随后命令相同。辅助工具要求输入与重建页一对一、尺寸相同。拆页或透视校正需要先建立归一化参考，详见 [数据契约](references/data-contract.md)。所有输出使用新路径，不覆盖输入或已有输出。
+Windows 可用 `.venv\Scripts\Activate.ps1` 激活环境，随后命令相同。辅助工具要求输入与重建页一对一、尺寸相同。拆页或透视校正需要先建立归一化参考，详见 [数据契约](references/data-contract.md)。所有输出使用新路径，不覆盖输入或已有输出。样式与复核模板位于 `assets/`；字段约定见 [calibration-and-review.md](references/calibration-and-review.md)。
 
 | 工具 | 输出 | 边界 |
 | --- | --- | --- |
 | `pdf_probe.py` | 页面、文字、字体、图片与结构信息，可选预览 | 结构入口存在不代表有效 |
 | `pdf_compare.py` | 原页与重建页并排 PDF | 对照文件不承担原书导航结构 |
 | `pdf_audit.py` | 结构差异与风险 JSON | 不证明 OCR、公式、标签内部或视觉还原正确 |
+| `pdf_style_check.py` | 校准区域的字号、字体、颜色与可选字符数量差异 | 只检查明确区域，不知道校准依据是否正确 |
+| `pdf_delivery_gate.py` | 绑定当前 PDF 的交付门禁报告 | 重跑检查；不证明复核者真的看过或标签内部有效 |
 
 审核退出码：`0` 为有限检查未发现差异，仍需人工/agent 目视复核；`1` 为发现差异；`2` 为参数或运行错误。每个工具提供 `--help`。
 
@@ -71,7 +80,7 @@ Windows 可用 `.venv\Scripts\Activate.ps1` 激活环境，随后命令相同。
 
 ```text
 SKILL.md                  核心约束与执行入口
-references/               8 份按需读取的详细规则
+references/               9 份按需读取的详细规则
 agents/openai.yaml        可选 Codex 界面元数据
 assets/job-template.json  任务数据模板
 scripts/                  PDF 检查和对照工具
@@ -94,7 +103,7 @@ python tools/build_release.py
 
 ## 验证范围与限制
 
-25 个 PDF CLI 回归场景覆盖输入保护、页序、书签层级及目标、链接丢失、页面标签、隐藏文字、字体与结构入口。另有安装、打包与格式检查测试。真实十页视觉样张用于改进规则，但不随公开仓库分发；复杂公式、竖排、异形布局和标签内部迁移尚未全部进行端到端书页验证。
+原有 25 个 PDF CLI 场景覆盖输入保护、页序、书签层级及目标、链接丢失、页面标签、隐藏文字、字体与结构入口。新增样式异常、可见字缺失、失效证据和错误完成状态回归；另有安装、打包与格式检查测试。真实十页视觉样张用于改进规则，但不随公开仓库分发；复杂公式、竖排、异形布局和标签内部迁移尚未全部进行端到端书页验证。
 
 工具只提供部分证据；完整 Tagged PDF 重建、数学语义与图片保真仍须按 skill 逐项验收。见 [验证说明](docs/validation.md)。
 

@@ -1,7 +1,16 @@
 {
-  "schema_version": "1.0",
-  "source": {"file_name": null, "sha256": null, "page_count": null},
-  "request": {"physical_pages": [], "preserve_images": true, "preserve_hierarchy": true, "approved_style": null},
+  "schema_version": "1.1",
+  "source": {
+    "file_name": null,
+    "sha256": null,
+    "page_count": null
+  },
+  "request": {
+    "physical_pages": [],
+    "preserve_images": true,
+    "preserve_hierarchy": true,
+    "approved_style": null
+  },
   "coordinate_system": "display-top-left-pt",
   "pages": [],
   "structure": {
@@ -10,10 +19,23 @@
     "page_labels": [],
     "named_destinations": [],
     "links": [],
-    "tags": {"present": null, "migration_status": "pending"},
-    "optional_content": {"present": null, "migration_status": "pending"}
+    "tags": {
+      "present": null,
+      "migration_status": "pending"
+    },
+    "optional_content": {
+      "present": null,
+      "migration_status": "pending"
+    }
   },
   "tool_versions": {},
   "uncertainties": [],
-  "status": "pending"
+  "status": "pending",
+  "calibration": {
+    "status": "pending",
+    "reference_sha256": null,
+    "representative_pages": [],
+    "style_plan": null
+  },
+  "delivery_gate": null
 }

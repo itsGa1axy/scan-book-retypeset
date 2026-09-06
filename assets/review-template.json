@@ -1,0 +1,24 @@
+{
+  "schema": "scan-book-retypeset/review-v2",
+  "source_sha256": null,
+  "rebuilt_sha256": null,
+  "source_pages": [],
+  "pages": [],
+  "style_plan": null,
+  "structure": {
+    "navigation": {
+      "status": "pending",
+      "evidence": null
+    },
+    "tags": {
+      "status": "pending",
+      "evidence": null
+    },
+    "optional_content": {
+      "status": "pending",
+      "evidence": null
+    }
+  },
+  "exceptions": [],
+  "unresolved": []
+}

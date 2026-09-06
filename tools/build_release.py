@@ -47,7 +47,7 @@ def build(output_dir, tag=None):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output-dir', type=Path, default=ROOT / 'dist')
-    parser.add_argument('--tag', help='Require exact match with the skill version, e.g. v1.0.0')
+    parser.add_argument('--tag', help='Require exact match with the skill version, e.g. v1.1.0')
     args = parser.parse_args()
     try:
         print(build(args.output_dir, args.tag))
