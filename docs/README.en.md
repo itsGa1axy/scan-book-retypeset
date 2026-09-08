@@ -44,3 +44,7 @@ python tools/build_release.py
 Tests generate their own PDFs using an embedded font provided by the dependency. No books or system fonts are required. Complex mathematical semantics and complete tagged-content migration are not covered by the limited CLI tests.
 
 Author and contributor: [itsGa1axy](https://github.com/itsGa1axy). Original project code and documentation: [MIT](../LICENSE). External dependencies retain their own licenses.
+
+## v1.2: mixed math before batch expansion
+
+Do not retain entire lines simply because they contain Latin variables. Pilot actual mixed CJK/math, display formulas, independent chapter titles and tables before expanding those classes. A synthetic TeX template and `pdf_place_block.py` provide a concrete route to native-size vector/text overlays, with overflow and protected-region rejection. The helper does not erase scans or transfer book navigation/tags. The audit now checks visible font-metric boxes beyond page edges; style plans optionally check `expected.content_bbox`. See [workflow](../references/pilot-and-mixed-math.md).

@@ -1,0 +1,17 @@
+% Synthetic example. Copy into a task directory; calibrate fonts and geometry.
+% Requires a CJK font available locally (replace Noto Serif CJK SC if needed).
+\documentclass[border=2bp]{standalone}
+\usepackage{fontspec,xeCJK,amsmath}
+\setCJKmainfont{Noto Serif CJK SC}
+\setmainfont{lmroman10-regular.otf}
+\begin{document}
+\begin{minipage}{400bp}
+\fontsize{10bp}{16bp}\selectfont
+\setlength{\parindent}{0pt}
+设 $X_1$ 与 $X_2$ 为两个随机变量，记 $Y=X_1+X_2$。\\
+下式仅用于测试分式、求和限与上下标的排版：
+\[
+S_n=\sum_{k=1}^{n}\frac{x_k^2}{1+x_k^2}.
+\]
+\end{minipage}
+\end{document}

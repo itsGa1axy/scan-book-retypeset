@@ -3,7 +3,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DIRECTORIES = ('agents', 'assets', 'references', 'scripts')
-SUFFIXES = {'.md', '.py', '.yaml', '.json'}
+SUFFIXES = {'.md', '.py', '.yaml', '.json', '.tex'}
 
 
 def skill_files(root=ROOT):

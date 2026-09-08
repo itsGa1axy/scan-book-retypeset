@@ -8,3 +8,7 @@
 - 实际转换的书籍、图片、字体由使用者按各自授权提供，不属于本项目的 MIT 授权对象。
 
 Skill 格式依据 [Agent Skills](https://agentskills.io/specification)，不是复制官方 validator 的实现。更详细的规范来源在 [references/standards.md](../references/standards.md)。
+
+## 可选公式运行时
+
+混排模板需要支持 CJK 的 XeLaTeX / Tectonic 或等效引擎、`standalone`、`fontspec`、`xeCJK`、`amsmath` 及用户可用的 CJK 字体。它们不随 skill 包分发，也不是检查/放置工具的 Python 依赖。模板中的 Noto Serif CJK SC 是可替换配置；使用系统字体时不将字体文件打包。

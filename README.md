@@ -9,9 +9,9 @@
 
 [English](docs/README.en.md) · [Skill 正文](SKILL.md) · [完整下载](https://github.com/itsGa1axy/scan-book-retypeset/releases) · [验证范围](docs/validation.md)
 
-## v1.1：先校准样式，再允许完成交付
+## v1.2：先做通混排、公式和章标题
 
-针对真实整书输出中的姓名字号膨胀、标题混色、引用字体错误和误报完成，新增独立区域样式计划与交付门禁。逐页存在文件、全书联系表、旧标签入口或自由文本“例外说明”不能代替验收。详见 [校准与门禁](references/calibration-and-review.md)。
+针对实际抽查中出现的公式整行保留扫描、无编号章名缩成正文、行尾越界，新增困难区域样张流程、CJK/LaTeX 合成模板和自然尺寸 PDF 块放置工具。全页边界与区域内容框检查用于发现裁字；旧版样式与交付门禁继续保留。详见 [混排流程](references/pilot-and-mixed-math.md)。
 
 ## 能做什么
 
@@ -26,7 +26,7 @@
 
 ## 安装与调用
 
-从 [Releases](https://github.com/itsGa1axy/scan-book-retypeset/releases) 下载 `scan-book-retypeset-v1.1.0.zip`，解压后将**整个 `scan-book-retypeset` 目录**放入 agent 支持的 skills 目录。压缩包已包含参考文档、脚本和许可证。
+从 [Releases](https://github.com/itsGa1axy/scan-book-retypeset/releases) 下载 `scan-book-retypeset-v1.2.0.zip`，解压后将**整个 `scan-book-retypeset` 目录**放入 agent 支持的 skills 目录。压缩包已包含参考文档、脚本和许可证。
 
 也可以从源码安装到 Codex（macOS / Linux；目标已存在时先检查，脚本不会覆盖）：
 
@@ -68,10 +68,11 @@ Windows 可用 `.venv\Scripts\Activate.ps1` 激活环境，随后命令相同。
 
 | 工具 | 输出 | 边界 |
 | --- | --- | --- |
+| `pdf_place_block.py` | 已编译文字/公式的自然尺寸叠加页 | 不清理扫描、不迁移导航、不自动 OCR；拒绝超框与保护区相交 |
 | `pdf_probe.py` | 页面、文字、字体、图片与结构信息，可选预览 | 结构入口存在不代表有效 |
 | `pdf_compare.py` | 原页与重建页并排 PDF | 对照文件不承担原书导航结构 |
 | `pdf_audit.py` | 结构差异与风险 JSON | 不证明 OCR、公式、标签内部或视觉还原正确 |
-| `pdf_style_check.py` | 校准区域的字号、字体、颜色与可选字符数量差异 | 只检查明确区域，不知道校准依据是否正确 |
+| `pdf_style_check.py` | 校准区域的字号、字体、颜色、可选字符数量和内容框差异 | 只检查明确区域，不知道校准依据是否正确 |
 | `pdf_delivery_gate.py` | 绑定当前 PDF 的交付门禁报告 | 重跑检查；不证明复核者真的看过或标签内部有效 |
 
 审核退出码：`0` 为有限检查未发现差异，仍需人工/agent 目视复核；`1` 为发现差异；`2` 为参数或运行错误。每个工具提供 `--help`。
@@ -80,10 +81,10 @@ Windows 可用 `.venv\Scripts\Activate.ps1` 激活环境，随后命令相同。
 
 ```text
 SKILL.md                  核心约束与执行入口
-references/               9 份按需读取的详细规则
+references/               10 份按需读取的详细规则
 agents/openai.yaml        可选 Codex 界面元数据
 assets/job-template.json  任务数据模板
-scripts/                  PDF 检查和对照工具
+scripts/                  PDF 检查、对照和区域放置工具
 tests/                    自建 PDF 回归用例
 tools/                    格式检查、安装、可复现打包
 docs/                     英文说明、验证边界和发布说明

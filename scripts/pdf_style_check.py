@@ -80,9 +80,16 @@ def check_styles(doc, plan, source_hash=None):
         expected_count = expected.get('nonspace_chars')
         if 'nonspace_chars' in expected and (isinstance(expected_count, bool) or not isinstance(expected_count, int) or expected_count < 1):
             raise ValueError('nonspace_chars must be a positive integer when supplied')
+        content_box = None
+        if 'content_bbox' in expected:
+            content_box = fitz.Rect(finite_list(expected['content_bbox'], 4, 'content_bbox'))
+            if content_box.is_empty or content_box not in box:
+                raise ValueError('content_bbox must be inside the selection bbox')
         if number not in cache:
             cache[number] = page.get_texttrace()
         count, mismatches = 0, {'size': [], 'font': [], 'color': []}
+        if content_box is not None:
+            mismatches['bounds'] = []
         for trace in cache[number]:
             if trace['type'] not in (0, 1) or trace.get('opacity', 1) <= 0:
                 continue
@@ -98,6 +105,8 @@ def check_styles(doc, plan, source_hash=None):
                     continue
                 count += 1
                 item = {'char': char, 'bbox': list(rect), 'size_pt': trace['size'], 'font': font, 'color_rgb': actual_rgb}
+                if content_box is not None and rect not in content_box:
+                    mismatches['bounds'].append(item)
                 if not low <= trace['size'] <= high:
                     mismatches['size'].append(item)
                 if font not in fonts:

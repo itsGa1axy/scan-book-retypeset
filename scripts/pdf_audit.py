@@ -7,7 +7,7 @@
 import argparse
 import json
 from collections import Counter
-from pdf_common import fitz, json_bytes, open_pdf, output_guard, page_info, pages_arg, projected_outline, run, serial, sha256, structure, write_new
+from pdf_common import fitz, json_bytes, open_pdf, output_guard, page_info, pages_arg, projected_outline, run, serial, sha256, structure, visible_geometry, write_new
 
 
 def outline_paths(rows):
@@ -103,6 +103,10 @@ def main():
                 warnings.append({'code': 'page-transform-review-required', 'output_page': outnum})
             if b['hidden_chars']:
                 issue('hidden-text-in-output', outnum, b['hidden_chars'])
+            outside = visible_geometry(rebuilt[index])
+            if outside:
+                issue('visible-text-outside-page', outnum,
+                      {'count': len(outside), 'examples': outside[:12], 'tolerance_pt': 0.5})
             if not b['visible_candidate_chars'] and outnum not in allowed_empty:
                 issue('no-visible-text-candidates', outnum)
             if b['unknown_unicode_chars']:

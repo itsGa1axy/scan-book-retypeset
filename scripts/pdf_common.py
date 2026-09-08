@@ -108,6 +108,27 @@ def structure(doc):
     }
 
 
+def visible_geometry(page, tolerance=0.5):
+    """Conservative font-metric boxes in display coordinates, not pixel ink.
+
+    Inspect texttrace rather than a clipped text extraction, so characters
+    extending beyond the page are included. This does not detect occlusion.
+    """
+    bounds = page.rect + (-tolerance, -tolerance, tolerance, tolerance)
+    outside = []
+    for trace in page.get_texttrace():
+        if trace['type'] not in (0, 1) or trace.get('opacity', 1) <= 0:
+            continue
+        for code, _, origin, bbox in trace['chars']:
+            char = chr(code) if 0 <= code <= 0x10ffff else '\ufffd'
+            if char.isspace():
+                continue
+            rect = fitz.Rect(bbox) * page.rotation_matrix
+            if rect not in bounds:
+                outside.append({'char': char, 'bbox': list(rect)})
+    return outside
+
+
 def page_info(doc, number, font_cache):
     p = doc[number - 1]
     traces = p.get_texttrace()
