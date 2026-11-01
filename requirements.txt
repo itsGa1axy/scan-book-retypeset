@@ -1,1 +1,1 @@
-pymupdf==1.26.5
+pymupdf==2.0
